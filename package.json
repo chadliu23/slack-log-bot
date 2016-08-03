@@ -1,0 +1,24 @@
+{
+  "name": "slack-log-bot",
+  "version": "1.0.0",
+  "description": "A bot to log slack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chadliu23/slack-log-bot.git"
+  },
+  "author": "chadliu23",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chadliu23/slack-log-bot/issues"
+  },
+  "homepage": "https://github.com/chadliu23/slack-log-bot#readme",
+  "dependencies": {
+    "botkit": "^0.2.2",
+    "express": "^4.14.0",
+    "pg": "^6.0.3"
+  }
+}

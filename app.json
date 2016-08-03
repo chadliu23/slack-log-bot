@@ -1,0 +1,5 @@
+{
+  "name":"Slack Log Bot",
+  "description": "A bot to log slack message",
+  "repository":"https://github.com/chadliu23/slack-log-bot"
+}
