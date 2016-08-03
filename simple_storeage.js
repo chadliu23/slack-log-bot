@@ -30,6 +30,7 @@ module.exports = function(config) {
                 teams_db.get(team_id, cb);
             },
             save: function(team_data, cb) {
+                console.log(team_data);
                 teams_db.save(team_data.id, team_data, cb);
             },
             all: function(cb) {
@@ -41,6 +42,7 @@ module.exports = function(config) {
                 users_db.get(user_id, cb);
             },
             save: function(user, cb) {
+                console.log(user);
                 users_db.save(user.id, user, cb);
             },
             all: function(cb) {
@@ -52,6 +54,7 @@ module.exports = function(config) {
                 channels_db.get(channel_id, cb);
             },
             save: function(channel, cb) {
+                console.log(channel);
                 channels_db.save(channel.id, channel, cb);
             },
             all: function(cb) {
