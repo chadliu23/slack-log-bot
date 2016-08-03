@@ -86,11 +86,25 @@ app.get('/channels', function(request, response) {
   })
 });
 
+app.get('/channel/:channel/name/:name', function(request, response) {
+  pool.query('select user_id,  text, timestamp from  slack_log where channel_id =$1 order by timestamp dec', 
+            [request.params.channel],
+            function(err, result) {
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+              result['channelName'] = request.params.name;
+              response.send(result);
+              // response.render('channel', result);
+            });
+});
+
 app.get('/users', function(request, response) {
   bot.api.users.list({'presence':'1'}, function(err, data){
     response.send(data);
   })
 });
+
+
 
 
 app.listen(app.get('port'), function() {
