@@ -86,6 +86,19 @@ app.get('/channels', function(request, response) {
   })
 });
 
+var users = {};
+
+bot.api.users.list({'presence':'1'}, function(err, data){
+    data = JSON.parse(data);
+    if (!data.ok || err){
+        console.log('error to get user list');
+        return;
+    }
+    for (var i = 0; i < data.member.length; i++){
+        users[data.member[i].id] = data.member[i].name;
+    }
+});
+
 app.get('/channel/:channel/name/:name', function(request, response) {
   pool.query('select user_id,  text, timestamp from  slack_log where channel_id =$1 order by timestamp desc', 
             [request.params.channel],
@@ -94,7 +107,11 @@ app.get('/channel/:channel/name/:name', function(request, response) {
                { console.error(err); response.send("Error " + err); }
               result['channelName'] = request.params.name;
               response.send(result);
-              // response.render('channel', result);
+              result = JSON.parse(result);
+              for (var i = 0; i < result.rows.length; i++){
+                result.rows[i]['username'] = users[result.rows[i]['user_id']];
+              }
+              response.render('channel', result);
             });
 });
 
