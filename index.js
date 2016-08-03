@@ -20,7 +20,6 @@ const config = {
 
 var pool = new Pool(config);
 
-var client = pool.connect();
 
 var Botkit = require('botkit');
 var controller = Botkit.slackbot({
@@ -28,7 +27,7 @@ var controller = Botkit.slackbot({
 
 // reply to a direct mention - @bot hello
 controller.on('direct_mention',function(bot,message) {
-    client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+    pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
               done();
@@ -39,7 +38,7 @@ controller.on('direct_mention',function(bot,message) {
 
 // reply to a direct message
 controller.on('direct_message',function(bot,message) {
-    client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+    pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
               done();
@@ -49,7 +48,7 @@ controller.on('direct_message',function(bot,message) {
 });
 
 controller.on('mention',function(bot,message) {
-    client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+    pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
               done();
@@ -59,7 +58,7 @@ controller.on('mention',function(bot,message) {
 });
 
 controller.on('ambient',function(bot,message) {
-      client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+      pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
               done();
