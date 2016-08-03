@@ -20,7 +20,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/slacklog', function(request, response){
-    simple_storeage_provider.storage.channels.all(function (err, data){
+    simple_storeage_provider.channels.all(function (err, data){
         response.send(data);
     });
 });
