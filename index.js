@@ -87,7 +87,7 @@ app.get('/channels', function(request, response) {
 });
 
 app.get('/channel/:channel/name/:name', function(request, response) {
-  pool.query('select user_id,  text, timestamp from  slack_log where channel_id =$1 order by timestamp dec', 
+  pool.query('select user_id,  text, timestamp from  slack_log where channel_id =$1 order by timestamp desc', 
             [request.params.channel],
             function(err, result) {
               if (err)
