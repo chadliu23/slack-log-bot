@@ -11,7 +11,7 @@ var controller = Botkit.slackbot({
 });
 var bot = controller.spawn({
   token: process.env.TOKEN
-});
+}).startRTM();
 
 controller.on('message_received', function(bot, message) {
     console.log(message);
