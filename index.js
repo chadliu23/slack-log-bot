@@ -94,14 +94,16 @@ function getUsers(request, response, callback){
             console.log('error to get user list');
             return;
         }
+
         for (var i = 0; i < data.members.length; i++){
+            console.log(i + " " + data.members[i].id + " " + data.members[i].name);
             users[data.members[i].id] = data.members[i].name;
         }
-        callback(request, response);
+        callback(request, response, users);
     });
 }
 
-var getChannelMessages = function (request, response){
+var getChannelMessages = function (request, response, users){
 
   pool.query('select user_id,  text, timestamp from  slack_log where channel_id =$1 order by timestamp desc', 
     [request.params.channel],
@@ -121,7 +123,7 @@ app.get('/channel/:channel/name/:name', function(request, response) {
     if (Object.keys(users).length === 0){
         getUsers(request, response, getChannelMessages);
     }
-    getChannelMessages(request, response);
+    getChannelMessages(request, response, users);
   
 });
 
