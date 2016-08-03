@@ -53,13 +53,13 @@ app.get('/', function(request, response) {
 });
 
 app.get('/channels', function(request, response) {
-  bot.api.channels.list({'exclude_archived', '1'}, function(err, data){
+  bot.api.channels.list({'exclude_archived':'1'}, function(err, data){
     response.send(data);
   })
 });
 
 app.get('users', function(request, response) {
-  bot.api.users.list({'presence', '1'}, function(err, data){
+  bot.api.users.list({'presence':'1'}, function(err, data){
     response.send(data);
   })
 });
