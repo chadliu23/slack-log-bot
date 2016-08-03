@@ -13,6 +13,10 @@ var bot = controller.spawn({
   token: process.env.TOKEN
 });
 
+controller.on('message_received', function(bot, message) {
+    console.log(message);
+});
+
 app.set('port', (process.env.PORT || 5000));
 
 app.get('/', function(request, response) {
