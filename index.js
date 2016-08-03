@@ -110,6 +110,7 @@ function getChannelMessages(request, response){
        { console.error(err); response.send("Error " + err); }
       result['channelName'] = request.params.name;
       for (var i = 0; i < result.rows.length; i++){
+        console.log(result.rows[i]['user_id'] + ' map to ' + users[result.rows[i]['user_id']]);
         result.rows[i]['username'] = users[result.rows[i]['user_id']];
       }
       response.render('channel', result);
