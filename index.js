@@ -96,7 +96,6 @@ function getUsers(request, response, callback){
         }
 
         for (var i = 0; i < data.members.length; i++){
-            console.log(i + " " + data.members[i].id + " " + data.members[i].name);
             users[data.members[i].id] = data.members[i].name;
         }
         callback(request, response, users);
@@ -111,7 +110,6 @@ var getChannelMessages = function (request, response, users){
       if (err)
        { console.error(err); response.send("Error " + err); }
       result['channelName'] = request.params.name;
-
       for (var i = 0; i < result.rows.length; i++){
         result.rows[i]['username'] = users[result.rows[i]['user_id']];
       }
@@ -132,9 +130,6 @@ app.get('/users', function(request, response) {
     response.send(data);
   })
 });
-
-
-
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
