@@ -94,8 +94,8 @@ function getUsers(callback){
             console.log('error to get user list');
             return;
         }
-        for (var i = 0; i < data.member.length; i++){
-            users[data.member[i].id] = data.member[i].name;
+        for (var i = 0; i < data.members.length; i++){
+            users[data.members[i].id] = data.members[i].name;
         }
         callback();
     });
@@ -109,8 +109,8 @@ function getChannelMessages(request, response){
       if (err)
        { console.error(err); response.send("Error " + err); }
       result['channelName'] = request.params.name;
+
       for (var i = 0; i < result.rows.length; i++){
-        console.log(result.rows[i]['user_id'] + ' map to ' + users[result.rows[i]['user_id']]);
         result.rows[i]['username'] = users[result.rows[i]['user_id']];
       }
       response.render('channel', result);
