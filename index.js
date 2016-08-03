@@ -3,40 +3,69 @@
 var express = require('express');
 var app = express();
 
+var Pool = require('pg-pool');
+const url = require('url')
+
+const params = url.parse(process.env.DATABASE_URL);
+const auth = params.auth.split(':');
+
+const config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
+
+var pool = new Pool(config);
+
+var client = pool.connect();
+
 var Botkit = require('botkit');
 var controller = Botkit.slackbot({
 });
 
 // reply to a direct mention - @bot hello
 controller.on('direct_mention',function(bot,message) {
-  // reply to _message_ by using the _bot_ object
-  console.log('direct_mention: ');
-  console.log(message);
-  bot.reply(message,'I heard you mention me!');
+    client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+            [message.channel, message.user, message.text],
+            function(err, result) {
+              done();
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+        });
 });
 
 // reply to a direct message
 controller.on('direct_message',function(bot,message) {
-  // reply to _message_ by using the _bot_ object
-  console.log('direct_message: ');
-  console.log(message);
-  bot.reply(message,'You are talking directly to me');
+    client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+            [message.channel, message.user, message.text],
+            function(err, result) {
+              done();
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+        });
 });
 
 controller.on('mention',function(bot,message) {
-  // reply to _message_ by using the _bot_ object
-  console.log('mention: ');
-  console.log(message);
-  bot.reply(message,'Are you mention me');
+    client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+            [message.channel, message.user, message.text],
+            function(err, result) {
+              done();
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+        });
 });
 
 controller.on('ambient',function(bot,message) {
-  // reply to _message_ by using the _bot_ object
-  console.log('channel id: ' + message.channel);
-  console.log('text: ' + message.text);
-  console.log('user id: ' + message.user);
-
-  bot.reply(message,'You are not talking to me');
+      client.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+            [message.channel, message.user, message.text],
+            function(err, result) {
+              done();
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+        });
 });
 
 
@@ -58,7 +87,7 @@ app.get('/channels', function(request, response) {
   })
 });
 
-app.get('users', function(request, response) {
+app.get('/users', function(request, response) {
   bot.api.users.list({'presence':'1'}, function(err, data){
     response.send(data);
   })
