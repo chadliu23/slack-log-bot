@@ -30,7 +30,6 @@ controller.on('direct_mention',function(bot,message) {
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
-              done();
               if (err)
                { console.error(err); response.send("Error " + err); }
         });
@@ -41,7 +40,6 @@ controller.on('direct_message',function(bot,message) {
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
-              done();
               if (err)
                { console.error(err); response.send("Error " + err); }
         });
@@ -51,7 +49,6 @@ controller.on('mention',function(bot,message) {
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
-              done();
               if (err)
                { console.error(err); response.send("Error " + err); }
         });
@@ -61,7 +58,6 @@ controller.on('ambient',function(bot,message) {
       pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
-              done();
               if (err)
                { console.error(err); response.send("Error " + err); }
         });
