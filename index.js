@@ -7,15 +7,20 @@ var simple_storeage_provider = require('./simple_storeage.js')();
 
 var Botkit = require('botkit');
 var controller = Botkit.slackbot({
-    storage:  simple_storeage_provider
+    storage:  simple_storeage_provider,
+    debug:true
 });
+
+controller.on('message_received', function(bot, message) {
+    console.log('message: ' + message);
+    console.log('bot: ' + bot);
+});
+
 var bot = controller.spawn({
   token: process.env.TOKEN
 }).startRTM();
 
-controller.on('message_received', function(bot, message) {
-    console.log(message);
-});
+
 
 app.set('port', (process.env.PORT || 5000));
 
