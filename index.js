@@ -3,12 +3,11 @@
 var express = require('express');
 var app = express();
 
-var simple_storeage_provider = require('./simple_storeage.js')();
+var simple_storeage_provider = require('./simple_storeage.js');
 
 var Botkit = require('botkit');
 var controller = Botkit.slackbot({
-    storage:  simple_storeage_provider,
-    debug:true
+    storage:  simple_storeage_provider
 });
 
 controller.on('message_received', function(bot, message) {
