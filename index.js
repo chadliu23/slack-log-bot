@@ -2,7 +2,7 @@
 
 var express = require('express');
 var app = express();
-
+var  mustacheExpress = require('mustache-express'); 
 var Pool = require('pg-pool');
 const url = require('url')
 
@@ -69,6 +69,10 @@ var bot = controller.spawn({
 }).startRTM();
 
 
+app.engine('html', mustacheExpress());
+app.set('view engine', 'html');
+app.set('views', __dirname + '/html');
+app.use(express.static(__dirname + '/public'));
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -78,7 +82,7 @@ app.get('/', function(request, response) {
 
 app.get('/channels', function(request, response) {
   bot.api.channels.list({'exclude_archived':'1'}, function(err, data){
-    response.send(data);
+    response.render('channelList', data);
   })
 });
 
@@ -87,6 +91,7 @@ app.get('/users', function(request, response) {
     response.send(data);
   })
 });
+
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
