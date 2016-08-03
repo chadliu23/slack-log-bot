@@ -88,7 +88,7 @@ app.get('/channels', function(request, response) {
 
 var users = {};
 
-function getUsers(callback){
+function getUsers(request, response, callback){
     bot.api.users.list({'presence':'1'}, function(err, data){
         if (!data.ok || err){
             console.log('error to get user list');
@@ -97,11 +97,11 @@ function getUsers(callback){
         for (var i = 0; i < data.members.length; i++){
             users[data.members[i].id] = data.members[i].name;
         }
-        callback();
+        callback(request, response);
     });
 }
 
-function getChannelMessages(request, response){
+var getChannelMessages = function (request, response){
 
   pool.query('select user_id,  text, timestamp from  slack_log where channel_id =$1 order by timestamp desc', 
     [request.params.channel],
@@ -119,9 +119,7 @@ function getChannelMessages(request, response){
 
 app.get('/channel/:channel/name/:name', function(request, response) {
     if (Object.keys(users).length === 0){
-        getUsers(
-                getChannelMessages(request, response)
-            );
+        getUsers(request, response, getChannelMessages);
     }
     getChannelMessages(request, response);
   
