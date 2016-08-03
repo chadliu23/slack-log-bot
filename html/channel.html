@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+</head>
+<body>
+    <h1>Channel: {{channelName}}</h1>
+    <div style="display:table;">
+      {{#rows}}
+      <div style="display:table-row;">
+          <div style="display:table-cell;">{{username}}</div>
+          <div style="display:table-cell;">{{text}}</div>
+          <div style="display:table-cell;">{{timestamp}}</div>
+      </div>
+      {{/rows}}
+    </div>
+
+</body>
+</html>
