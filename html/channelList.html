@@ -3,11 +3,12 @@
 <html>
 
 <head>
-
+<link rel="stylesheet" type="text/css" href="/css/channellist.css">
 </head>
 <body>
+    <h1>Channels</h1>
       {{#channels}}
-      <a href="/channel/{{id}}/name/{{name}}">{{name}}</a>
+      <div class='onerow'><a href="/channel/{{id}}/name/{{name}}">{{name}}</a></div>
       {{/channels}}
 
 </body>
