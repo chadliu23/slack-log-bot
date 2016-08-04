@@ -35,3 +35,5 @@ node recorder.js
 ```
 
 # LICENSE
+
+MIT Licence
