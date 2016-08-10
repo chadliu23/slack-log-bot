@@ -69,7 +69,19 @@ app.get('/', function(request, response) {
 });
 
 app.get('/channels', function(request, response) {
-    response.render('channelList', channelsData);
+  pool.query('select distinct channel_id from slack_log', [],
+    function(err, result){
+      var channelList = {};
+      channelList.channels = [];
+      for (var i = 0; i < result.rows.length; i++){
+        var tempChannel = {};
+        tempChannel.id = result.rows[i]['channel_id'];
+        tempChannel.name = slackChannels[tempChannel.id];
+        channelList.channels.push(tempChannel);
+      }
+
+      response.render('channelList', channelList);
+  });
 });
 
 
