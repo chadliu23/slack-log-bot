@@ -88,8 +88,22 @@ controller.on('file_share', function(bot, message) {
 
 controller.on('tick', function(emptyArray){});
 controller.on('file_shared', function(bot, message) {});
+controller.on('user_typing', function(bot, message) {});
 controller.on('presence_change', function(bot, message){
     // users' presence change
+});
+controller.on('reaction_added', function(bot, message){
+// message: 
+  // { type: 'reaction_added',
+  // user: 'U0KUDTULX',
+  // item: 
+  //  { type: 'message',
+  //    channel: 'C18SRR9S7',
+  //    ts: '1470799341.000094' },
+  // reaction: '+1',
+  // item_user: 'U1NGUL9D2',
+  // event_ts: '1470799377.451744' }
+
 });
 
 var bot = controller.spawn({
