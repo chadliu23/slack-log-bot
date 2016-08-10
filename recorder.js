@@ -25,6 +25,16 @@ var Botkit = require('botkit');
 var controller = Botkit.slackbot({
 });
 
+controller.on('rtm_open',function(bot) {
+  console.log('** The RTM api just connected!');
+});
+
+controller.on('rtm_close', function(bot, error){
+    error = true;
+});
+
+controller.on('tick', function(emptyArray){});
+
 // reply to a direct mention - @bot hello
 controller.on('direct_mention',function(bot,message) {
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
