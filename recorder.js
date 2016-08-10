@@ -30,10 +30,11 @@ controller.on('rtm_open',function(bot) {
 });
 
 controller.on('rtm_close', function(bot, error){
+    // For retry
     error = true;
 });
 
-controller.on('tick', function(emptyArray){});
+
 
 // reply to a direct mention - @bot hello
 controller.on('direct_mention',function(bot,message) {
@@ -84,8 +85,11 @@ controller.on('file_share', function(bot, message) {
         });
 });
 
-controller.on('file_shared', function(bot, message) {
 
+controller.on('tick', function(emptyArray){});
+controller.on('file_shared', function(bot, message) {});
+controller.on('presence_change', function(bot, message){
+    // users' presence change
 });
 
 var bot = controller.spawn({
