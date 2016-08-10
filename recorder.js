@@ -47,6 +47,7 @@ controller.on('direct_mention',function(bot,message) {
 
 // reply to a direct message
 controller.on('direct_message',function(bot,message) {
+    bot.reply(message, 'I am here');
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
