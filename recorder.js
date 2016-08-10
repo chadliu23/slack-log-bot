@@ -75,6 +75,19 @@ controller.on('ambient',function(bot,message) {
 });
 
 
+controller.on('file_share', function(bot, message) {
+     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
+            [message.channel, message.user, message.text],
+            function(err, result) {
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+        });
+});
+
+controller.on('file_shared', function(bot, message) {
+
+});
+
 var bot = controller.spawn({
   token: process.env.TOKEN
 }).startRTM();
