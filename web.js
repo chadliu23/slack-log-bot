@@ -120,7 +120,7 @@ var getChannelMessages = function (request, response, users){
           var src = matched.match(/<(http.*?)>/)[1];
           return "<a href='" + src + "'>" +src+  "</a>";
         }).replace(/<[^(\/|a)].*?>/g, function (matched){
-          var src = matched.match(/<([^(\/|a)].*?>)/)[1];
+          var src = matched.match(/<([^(\/|a)].*?)>/)[1];
           return src;
         }).replace(/&lt;/g,'<').replace(/&gt;/g, '>')
         ;
