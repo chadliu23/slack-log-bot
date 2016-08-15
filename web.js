@@ -93,7 +93,7 @@ var getChannelMessages = function (request, response, users){
     function(err, result) {
       if (err)
        { console.error(err); response.send("Error " + err); }
-      result['channelName'] = request.params.name;
+      result['channelName'] = slackChannels[request.params.channel];
       //  "[-a-zA-Z0-9@:%_\+\.~#?&//=]{2,256}.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?"
       var url = "[-a-zA-Z0-9@:%_\\+\.~#?&//=]{2,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?";
       var re = new RegExp("<(" + url + ")\\|" + url + ">","gi");
@@ -131,7 +131,7 @@ var getChannelMessages = function (request, response, users){
     });
 }
 
-app.get('/channel/:channel/name/:name', function(request, response) {
+app.get('/channel/:channel', function(request, response) {
     getChannelMessages(request, response, slackUsers);
   
 });
