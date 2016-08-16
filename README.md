@@ -6,7 +6,7 @@ It can deploy easily on [Heroku](http://www.heroku.com)
 
 #Settings
 
-1. Please set ENV `DATABASE_URL` for PostgreSQL and `TOKEN` for Bot
+1. Please set ENV `DATABASE_URL` for PostgreSQL, `TOKEN` for Bot, `url` for website host and port
 
 2. Table Schema:
 
