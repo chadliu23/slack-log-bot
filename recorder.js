@@ -24,6 +24,7 @@ var pool = new Pool(config);
 
 var Botkit = require('botkit');
 var controller = Botkit.slackbot({
+    retry:true
 });
 
 controller.on('rtm_open',function(bot) {
@@ -32,11 +33,27 @@ controller.on('rtm_open',function(bot) {
 
 controller.on('rtm_close', function(bot, error){
     console.log("rtm close called");
-
-    // re start
-    bot.startRTM();
-
 });
+
+
+
+function formatUptime(uptime) {
+    var unit = 'second';
+    if (uptime > 60) {
+        uptime = uptime / 60;
+        unit = 'minute';
+    }
+    if (uptime > 60) {
+        uptime = uptime / 60;
+        unit = 'hour';
+    }
+    if (uptime != 1) {
+        unit = unit + 's';
+    }
+
+    uptime = uptime + ' ' + unit;
+    return uptime;
+}
 
 
 
@@ -54,7 +71,9 @@ controller.on('direct_mention',function(bot,message) {
 
 // reply to a direct message
 controller.on('direct_message',function(bot,message) {
-    bot.reply(message, 'I am slack logger. This direct message is not in channel list. You still can check out at http://'+localUrl+'/channel/' + message.channel );
+    var uptime = formatUptime(process.uptime());
+
+    bot.reply(message, 'I am slack logger. I have been running for ' + uptime + ' on ' + localUrl + '.\nThis direct message is not in channel list. You still can check out at http://'+localUrl+'/channel/' + message.channel );
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
@@ -64,6 +83,7 @@ controller.on('direct_message',function(bot,message) {
 });
 
 controller.on('mention',function(bot,message) {
+
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
@@ -117,3 +137,9 @@ var bot = controller.spawn({
   token: process.env.TOKEN
 }).startRTM();
 
+setInterval(function() {
+    bot.destroy();
+    bot = controller.spawn({
+      token: process.env.TOKEN
+    }).startRTM();
+}, 1000 * 60 * 60 * 12 ); // restart every 12 hr
