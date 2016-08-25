@@ -24,7 +24,6 @@ var pool = new Pool(config);
 
 var Botkit = require('botkit');
 var controller = Botkit.slackbot({
-    retry:true
 });
 
 controller.on('rtm_open',function(bot) {
@@ -32,9 +31,9 @@ controller.on('rtm_open',function(bot) {
 });
 
 controller.on('rtm_close', function(bot, error){
-    console.log("rtm close called");
+    console.log("rtm close called at " + new Date());
+    process.exit(1);
 });
-
 
 
 function formatUptime(uptime) {
@@ -104,7 +103,7 @@ controller.on('ambient',function(bot,message) {
 
 controller.on('file_share', function(bot, message) {
      pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
-            [message.channel, message.user, message.text],
+            [message.channel, message.user, message.text + ' <' + message.file.url_private + '>' ],
             function(err, result) {
               if (err)
                { console.error(err); response.send("Error " + err); }
