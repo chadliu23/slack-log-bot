@@ -1,6 +1,6 @@
 # slack-log-bot
 
-It is the bot recieved slack message
+It is the bot recieved slack message and archive messages
 
 It can deploy easily on [Heroku](http://www.heroku.com) 
 
