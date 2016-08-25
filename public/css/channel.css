@@ -2,5 +2,6 @@
     padding: 4px;
 }
 .text-cell {
-    max-width: 600px;
+    max-width: 900px;
+    word-break:break-all;
 }

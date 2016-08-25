@@ -99,7 +99,7 @@ var getChannelMessages = function (request, response, users){
       var re = new RegExp("<(" + url + ")\\|" + url + ">","gi");
         
 
-      for (var i = 0; i < result.rows.length; i++){
+      for (var i = result.rows.length -1; i >=0; i--){
         result.rows[i]['username'] = users[result.rows[i]['user_id']];
 
         var message = result.rows[i]['text'];
@@ -114,7 +114,14 @@ var getChannelMessages = function (request, response, users){
         }).replace(/<@U\w{8}>/g, function (matched) {
           var member_id = matched.match(/@(U\w{8})/)[1];
           return '@' + slackUsers[member_id];
-        }).replace(re, function (matched, link) {
+        }).replace(/<@U\w{8}\|\w*?>/g, function (matched) {
+          var member_id = matched.match(/@(U\w{8})/)[1];
+          return '@' + slackUsers[member_id];
+        }).replace(/<#C\w{8}\|\w*?>/g, function (matched) {
+          var channel_id = matched.match(/#(C\w{8})/)[1];
+          return '#' + slackChannels[channel_id];
+        }).replace(/<!here\|@here?>/g, '@here')
+        .replace(re, function (matched, link) {
           return link = link.replace(/&amp;/g, '&');
         }).replace(/<http.*?>/g, function (matched){
           var src = matched.match(/<(http.*?)>/)[1];
@@ -126,6 +133,9 @@ var getChannelMessages = function (request, response, users){
         ;
 
         result.rows[i]['text'] = message;
+        if (message === ''){
+          result.rows.splice(i, 1);
+        }
       }
       response.render('channel', result);
     });
