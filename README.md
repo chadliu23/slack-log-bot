@@ -37,7 +37,7 @@ DATABASE_URL=postgres://xxxxxxx:xxxxxxx@127.0.0.1:5432/xxxxxxx TOKEN=ooxxxooxxxo
 
 ### Website
 ```sh
-DATABASE_URL=postgres://xxxxxxx:xxxxxxx@127.0.0.1:5432/xxxxxxx TOKEN=ooxxxooxxxooxxx PORT=8000  supervisor web.js
+DATABASE_URL=postgres://xxxxxxx:xxxxxxx@127.0.0.1:5432/xxxxxxx TOKEN=ooxxxooxxxooxxx PORT=8000  node web.js
 
 ```
 
