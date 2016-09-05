@@ -124,7 +124,6 @@ controller.on('direct_message',function(bot,message) {
 });
 
 controller.on('mention',function(bot,message) {
-
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
@@ -187,10 +186,3 @@ controller.on('reaction_added', function(bot, message){
 var bot = controller.spawn({
   token: process.env.TOKEN
 }).startRTM();
-
-setInterval(function() {
-    bot.destroy();
-    bot = controller.spawn({
-      token: process.env.TOKEN
-    }).startRTM();
-}, 1000 * 60 * 60 * 12 ); // restart every 12 hr
