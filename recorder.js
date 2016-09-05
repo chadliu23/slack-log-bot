@@ -58,8 +58,50 @@ function formatUptime(uptime) {
 
 // reply to a direct mention - @bot hello
 controller.on('direct_mention',function(bot,message) {
+  if (message.text[0]=='/'){
+    var res = message.text.split(" ");
+    var keyword = res[0].substring(1);
+    switch (keyword){
+      case 'auto_reply':
+        if (res.length < 2){
+          bot.reply(message, message.text + ' miss 1 parameter. Ex. /auto_reply hello world');
+          break;
+        }
+        var toReply = message.text.substring(message.text.indexOf(' '));
+        toReply = toReply.replace(/<[^(\/|a)].*?>/g, function (matched){
+          var src = matched.match(/<([^(\/|a)].*?)>/)[1];
+          return src;
+        })
+        pool.query('delete from slack_auto_reply where channel_id = $1', 
+          [message.channel], function(err, result){
+            if (err)
+               { console.error(err); response.send("Error " + err); }
+            pool.query('insert into slack_auto_reply(channel_id, user_id, text) values($1, $2, $3)', 
+                [message.channel, message.user, toReply],
+                function(err, result) {
+                  if (err)
+                   { console.error(err); response.send("Error " + err); }
+                  bot.reply(message, 'I remembered `'+ toReply +'`. (To remove `/remove_auto_reply`)');
+            });
+        } );
+        break;
+      case 'remove_auto_reply':
+        pool.query('delete from slack_auto_reply where channel_id =$1', 
+            [message.channel],
+            function(err, result) {
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+              bot.reply(message, 'I removed auto reply in this channel');
+        });
+        break;
+      default:
+        bot.reply(message, message.text + ' is unsupport command. I only support `/auto_reply`, `/remove_auto_reply`');
+        break;
+    }
+  } else {
     bot.reply(message, 'I am slack logger. This channel has been watched. You can check out at http://'+localUrl+'/channel/' + message.channel 
         + '\nFor more information please connect at chadliu23');
+  }
     pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
@@ -92,6 +134,16 @@ controller.on('mention',function(bot,message) {
 });
 
 controller.on('ambient',function(bot,message) {
+  pool.query('select text from  slack_auto_reply where channel_id =$1', 
+    [message.channel],
+    function(err, result) {
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      if (result.rows.length < 1){
+        return;
+      }
+      bot.reply(message, result.rows[0].text);
+   });
       pool.query('insert into slack_log(channel_id, user_id, text) values($1, $2, $3)', 
             [message.channel, message.user, message.text],
             function(err, result) {
