@@ -27,11 +27,11 @@ var controller = Botkit.slackbot({
 });
 
 controller.on('rtm_open',function(bot) {
-  console.log('** The RTM api just connected!');
+  console.log('** The RTM api just connected at ' + new Date());
 });
 
 controller.on('rtm_close', function(bot, error){
-    console.log("rtm close called at " + new Date());
+    console.log("** The RTM api just disconnected at " + new Date());
     process.exit(1);
 });
 
